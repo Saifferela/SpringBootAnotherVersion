@@ -17,19 +17,19 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public List<Account> getAccount(){
+    public List<Account> getAccount() {
         return accountRepository.findAll();
     }
 
     public void addAccount(Account account) {
-        if(accountRepository.findAccountByEmail(account.getEmail()).isPresent())
+        if (accountRepository.findAccountByEmail(account.getEmail()).isPresent())
             throw new IllegalStateException("This email already exists!");
         accountRepository.save(account);
     }
 
     public void deleteAccount(Long accountId) {
-        if(!accountRepository.existsById(accountId))
-            throw new IllegalStateException("Account with id" + accountId +" does not exists!");
+        if (!accountRepository.existsById(accountId))
+            throw new IllegalStateException("Account with id" + accountId + " does not exists!");
         accountRepository.deleteById(accountId);
 
     }
@@ -40,15 +40,15 @@ public class AccountService {
                 () -> new IllegalStateException("Student with id " + accountId + " does not exists!")
         );
 
-        if(firstName != null && firstName.length()>0 && !Objects.equals(account.getFirstName(), firstName))
+        if (firstName != null && firstName.length() > 0 && !Objects.equals(account.getFirstName(), firstName))
             account.setFirstName(firstName);
 
-        if(lastName != null && lastName.length()>0 && !Objects.equals(account.getLastName(), lastName))
+        if (lastName != null && lastName.length() > 0 && !Objects.equals(account.getLastName(), lastName))
             account.setLastName(lastName);
 
-        if(email != null && email.length()>0 && !Objects.equals(account.getEmail(), email)) {
+        if (email != null && email.length() > 0 && !Objects.equals(account.getEmail(), email)) {
             Optional<Account> accountOptional = accountRepository.findAccountByEmail(email);
-            if(accountOptional.isPresent()){
+            if (accountOptional.isPresent()) {
                 throw new IllegalStateException("email taken");
             }
             account.setEmail(email);

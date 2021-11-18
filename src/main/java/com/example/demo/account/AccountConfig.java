@@ -9,10 +9,10 @@ import java.time.Month;
 import java.util.List;
 
 @Configuration
-public class AccountConfig{
+public class AccountConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(AccountRepository accountRepository){
+    CommandLineRunner commandLineRunner(AccountRepository accountRepository) {
         return args ->
         {
             Account vasyl = new Account("Vasyl", "Danylenko", "saifferela@gmail.com", LocalDate.of(1996, Month.OCTOBER, 24));

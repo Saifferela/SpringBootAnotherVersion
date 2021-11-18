@@ -9,10 +9,10 @@ import java.time.Period;
 
 @Entity(name = "Account")
 @Table
-(
-        name = "account",
-        uniqueConstraints = {@UniqueConstraint(name = "account_email_unique", columnNames = "email")}
-)
+        (
+                name = "account",
+                uniqueConstraints = {@UniqueConstraint(name = "account_email_unique", columnNames = "email")}
+        )
 @NoArgsConstructor
 @Data
 public class Account {

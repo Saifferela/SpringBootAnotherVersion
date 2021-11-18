@@ -16,17 +16,17 @@ public class AccountController {
     }
 
     @GetMapping
-    public List<Account> getAccount(){
+    public List<Account> getAccount() {
         return accountService.getAccount();
     }
 
     @PostMapping
-    public void addAccount(@RequestBody Account account){
+    public void addAccount(@RequestBody Account account) {
         accountService.addAccount(account);
     }
 
     @DeleteMapping(path = "{accountId}")
-    public void deleteAccount(@PathVariable("accountId") Long accountId){
+    public void deleteAccount(@PathVariable("accountId") Long accountId) {
         accountService.deleteAccount(accountId);
     }
 
@@ -35,8 +35,7 @@ public class AccountController {
             @PathVariable("accountId") Long accountId,
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String email)
-    {
+            @RequestParam(required = false) String email) {
         accountService.updateAccount(accountId, firstName, lastName, email);
     }
 

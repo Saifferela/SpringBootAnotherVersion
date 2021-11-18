@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AccountController.class)
 class AccountControllerTest {
 
-    Account vasyl = new Account(1L,"Vasyl", "Danylenko", "saifferela@gmail.com", LocalDate.of(1996, Month.OCTOBER, 24));
+    Account vasyl = new Account(1L, "Vasyl", "Danylenko", "saifferela@gmail.com", LocalDate.of(1996, Month.OCTOBER, 24));
     List<Account> allAccount = List.of(vasyl);
 
 
@@ -34,7 +34,7 @@ class AccountControllerTest {
     private AccountRepository accountRepository;
 
     @Test
-    void getAccount() throws Exception{
+    void getAccount() throws Exception {
 
         when(accountService.getAccount()).thenReturn(allAccount);
 
@@ -52,14 +52,14 @@ class AccountControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/").content(
                 "{\"id\":1,\"firstName\":\"Vasyl\"," +
-                "\"lastName\":\"Danylenko\"," +
-                "\"email\":\"saifferela@gmail.com\"," +
-                "\"dob\":\"1996-10-24\"," +
-                "\"age\":25}").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+                        "\"lastName\":\"Danylenko\"," +
+                        "\"email\":\"saifferela@gmail.com\"," +
+                        "\"dob\":\"1996-10-24\"," +
+                        "\"age\":25}").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    void deleteAccount() throws Exception{
+    void deleteAccount() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/1"))
                 .andExpect(status().isOk());

@@ -11,13 +11,13 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DemoApplicationTests{
+public class DemoApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void test(){
+    public void test() {
 
     }
 
