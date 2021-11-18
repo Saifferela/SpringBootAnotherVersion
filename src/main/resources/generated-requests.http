@@ -1,0 +1,19 @@
+###
+GET http://localhost:8080
+
+###
+POST http://localhost:8080/
+Content-Type: application/json
+
+{
+  "firstName" : "Sergey",
+  "lastName" : "Shvaia",
+  "email" : "anatoliiTop@gmail.com",
+  "dob" : "1983-07-09"
+}
+
+###
+DELETE http://localhost:8080/1
+
+###
+PUT http://localhost:8080/2?firstName=DIMA
