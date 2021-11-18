@@ -1,5 +1,6 @@
 package com.example.demo.account;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,13 +10,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
+
+    Account account = new Account(1L,
+            "Vanya",
+            "Svitenko",
+            "sitvan@gmail.com",
+            LocalDate.of(2005, Month.APRIL, 12)
+    );
 
     @Mock
     private AccountRepository accountRepository;
@@ -36,13 +46,6 @@ class AccountServiceTest {
 
     @Test
     void addAccount() {
-        // given
-        Account account = new Account(
-                "Vanya",
-                "Svitenko",
-                "sitvan@gmail.com",
-                LocalDate.of(2005, Month.APRIL, 12)
-        );
 
         accountService.addAccount(account);
 
@@ -60,6 +63,7 @@ class AccountServiceTest {
     @Test
     void deleteAccount() {
         long id = 10;
+
         given(accountRepository.existsById(id)).willReturn(true);
 
         accountService.deleteAccount(id);
@@ -69,5 +73,16 @@ class AccountServiceTest {
 
     @Test
     void updateAccount() {
+
+        Account van = new Account(1L,
+                "Van",
+                "Svite",
+                "sitn@gmail.com",
+                LocalDate.of(2005, Month.APRIL, 12)
+        );
+
+        given(accountRepository.findById(1L)).willReturn(Optional.ofNullable(account));
+
+        accountService.updateAccount(van.getId(), van.getFirstName(), van.getLastName(), van.getEmail());
     }
 }

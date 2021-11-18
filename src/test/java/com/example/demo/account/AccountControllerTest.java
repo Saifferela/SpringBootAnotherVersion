@@ -60,12 +60,14 @@ class AccountControllerTest {
 
     @Test
     void deleteAccount() throws Exception{
-        accountRepository.saveAll(allAccount);
+
         mockMvc.perform(MockMvcRequestBuilders.delete("/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void updateAccount() {
+    void updateAccount() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/1?firstName=DIMA"))
+                .andExpect(status().isOk());
     }
 }
