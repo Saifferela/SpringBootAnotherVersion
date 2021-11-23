@@ -1,5 +1,6 @@
 package com.example.demo.account;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

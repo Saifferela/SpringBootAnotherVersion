@@ -26,7 +26,7 @@ class AccountServiceTest {
     );
 
     @Mock
-    private AccountRepository accountRepository;
+    public AccountRepository accountRepository;
     private AccountService accountService;
 
     @BeforeEach
