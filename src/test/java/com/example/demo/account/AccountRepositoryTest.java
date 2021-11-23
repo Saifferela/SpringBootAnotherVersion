@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(initializers = {AccountRepositoryTest.Initializer.class})
@@ -26,11 +27,16 @@ class AccountRepositoryTest extends AccountServiceTest {
 
 
     @ClassRule
-    public static PostgreSQLContainer postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer("postgres:1.16.2")
-            .withDatabaseName("saifferela")
-            .withUsername("postgre")
-            .withPassword("root")
-            .waitingFor(Wait.forListeningPort());
+    protected static final PostgreSQLContainer postgreSQLContainer;
+
+    static {
+        postgreSQLContainer = new PostgreSQLContainer("postgres:9.6.15")
+                .withDatabaseName("socialmediasite")
+                .withUsername("postgres")
+                .withPassword("password");
+        //Mapped port can only be obtained after container is started.
+        postgreSQLContainer.start();
+    }
 
     static class Initializer
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
