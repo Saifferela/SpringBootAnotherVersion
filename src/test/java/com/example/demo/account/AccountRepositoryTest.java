@@ -1,12 +1,17 @@
 package com.example.demo.account;
 
-import com.example.demo.DemoApplication;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -14,26 +19,43 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by adam.
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@DirtiesContext
-class UserRepositoryIntegrationTest extends AccountServiceTest {
+@ContextConfiguration(initializers = {AccountRepositoryTest.Initializer.class})
+class AccountRepositoryTest extends AccountServiceTest {
+
+
+    @ClassRule
+    public static PostgreSQLContainer postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer("postgres:1.16.2")
+            .withDatabaseName("saifferela")
+            .withUsername("postgre")
+            .withPassword("root")
+            .waitingFor(Wait.forListeningPort());
+
+    static class Initializer
+            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
+                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
 
     @Test
     @Transactional
-    public void givenUsersInDBWhenUpdateStatusForNameModifyingQueryAnnotationNativeThenModifyMatchingUsers() {
+    public void givenUsersInDB_WhenUpdateStatusForNameModifyingQueryAnnotationNative_ThenModifyMatchingUsers(){
+        insertUsers();
+        Optional<Account> updatedUsersSize = accountRepository.findAccountByEmail("email2@example.com");
+        assertThat(updatedUsersSize).isEqualTo(true);
+    }
+
+    private void insertUsers() {
         accountRepository.save(new Account("SAMPLE", "Sashia", "email@example.com", LocalDate.of(2005, Month.APRIL, 21)));
         accountRepository.save(new Account("SAMPLE1", "Sashia", "email2@example.com", LocalDate.of(2005, Month.APRIL, 21)));
         accountRepository.save(new Account("SAMPLE", "Sashia", "email3@example.com", LocalDate.of(2005, Month.APRIL, 21)));
         accountRepository.save(new Account("SAMPLE3", "Sashia", "email4@example.com", LocalDate.of(2005, Month.APRIL, 21)));
         accountRepository.flush();
-
-
-        Optional<Account> updatedUsersSize = accountRepository.findAccountByEmail("email3@example.com");
-
-        assertThat(updatedUsersSize.isPresent()).isEqualTo(true);
     }
 }
